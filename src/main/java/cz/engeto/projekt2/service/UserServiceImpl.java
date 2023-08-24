@@ -1,4 +1,54 @@
 package cz.engeto.projekt2.service;
 
-public class UserServiceImpl {
+import cz.engeto.projekt2.model.User;
+import cz.engeto.projekt2.model.UserResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    //private List<User> users = new ArrayList<>();
+
+    @Override
+    public int saveUser(User user) {
+        return jdbcTemplate.update("INSERT INTO Users (name, surname, personId, personUuid) VALUES(?,?,?,?)",
+                new Object[] {user.getName(), user.getSurname(), user.getPersonId(), user.getPersonUuid()});
+    }
+
+    @Override
+    public UserResponse findUserById(long id) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM Users WHERE id=?",
+                BeanPropertyRowMapper.newInstance(UserResponse.class), id);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<UserResponse> findAllUsers() {
+        return jdbcTemplate.query("SELECT * FROM Users",
+                BeanPropertyRowMapper.newInstance(UserResponse.class));
+    }
+
+    @Override
+    public int update(UserResponse userResponse) {
+        return jdbcTemplate.update("UPDATE Users SET name = ?, surname = ?, personId = ?, personUuid = ? WHERE id=?",
+                new Object[] {userResponse.getName(), userResponse.getSurname(), userResponse.getPersonId(),
+                        userResponse.getPersonUuid(), userResponse.getId()});
+    }
+
+    @Override
+    public int deleteById(long id) {
+        return jdbcTemplate.update("DELETE FROM Users WHERE id=?", id);
+    }
 }
