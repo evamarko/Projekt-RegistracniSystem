@@ -9,8 +9,8 @@ import java.util.List;
 public interface UserService {
 
     int saveUser(User user);
-    int update(UserResponse userResponse);
+    int updateUser(UserResponse userResponse);
     UserResponse findUserById(long id);
     List<UserResponse> findAllUsers();
-    int deleteById(long id);
+    int deleteUserById(long id);
 }

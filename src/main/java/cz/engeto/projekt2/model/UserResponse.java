@@ -25,18 +25,6 @@ public class UserResponse {
         this.surname = surname;
     }
 
-    public UserResponse(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
-    }
-
-    public UserResponse(String name, String surname, String personId, String personUuid) {
-        this.name = name;
-        this.surname = surname;
-        this.personId = personId;
-        this.personUuid = personUuid;
-    }
-
     public UserResponse(String id, String name, String surname, String personId, String personUuid) {
         this.id = id;
         this.name = name;

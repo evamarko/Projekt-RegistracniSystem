@@ -16,12 +16,6 @@ public class User {
     public User() {
     }
 
-    public User(long id, String name, String surname) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-    }
-
     public User(String name, String surname, String personId, String personUuid) throws SQLException {
         this.name = name;
         this.surname = surname;
