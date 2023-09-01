@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
     UserServiceImpl userService;
 
-    @PostMapping("/user")
+    @PostMapping()
     public ResponseEntity<String> createUser(@RequestBody User user) throws SQLException {
         try {
             String uuid = UUID.randomUUID().toString();
@@ -31,7 +31,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable("id") long id, @RequestParam (required = false) boolean detail) {
         UserResponse user = userService.findUserById(id);
         if (detail) {
@@ -42,7 +42,7 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
-    @GetMapping("/users")
+    @GetMapping()
     public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam (required = false) boolean detail) {
         List<UserResponse> usersDetail = new ArrayList<>();
         usersDetail.addAll(userService.findAllUsers());
@@ -57,7 +57,7 @@ public class UserController {
         return new ResponseEntity<>(usersDetail, HttpStatus.OK);
     }
 
-    @PutMapping("/user")
+    @PutMapping()
     public ResponseEntity<String> updateUser(@RequestBody UserResponse userResponse) {
         Long userResponseId = Long.parseLong(userResponse.getId());
         UserResponse updatedUser = userService.findUserById(userResponseId);
@@ -72,7 +72,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") long id) {
             int result = userService.deleteUserById(id);
             if (result == 0) {
