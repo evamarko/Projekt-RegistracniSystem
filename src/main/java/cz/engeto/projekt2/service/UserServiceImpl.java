@@ -3,6 +3,7 @@ package cz.engeto.projekt2.service;
 import cz.engeto.projekt2.model.User;
 import cz.engeto.projekt2.model.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,10 +24,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse findUserById(long id) {
-            return jdbcTemplate.queryForObject("SELECT * FROM Users WHERE id=?",
-                BeanPropertyRowMapper.newInstance(UserResponse.class), id);
+        try {
+            UserResponse userResponse = jdbcTemplate.queryForObject("SELECT * FROM Users WHERE id=?",
+                    BeanPropertyRowMapper.newInstance(UserResponse.class), id);
+            return userResponse;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
-
+    
     @Override
     public List<UserResponse> findAllUsers() {
         return jdbcTemplate.query("SELECT * FROM Users",

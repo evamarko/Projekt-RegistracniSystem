@@ -3,10 +3,11 @@ package cz.engeto.projekt2.model;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class User {
+
     private long id;
     private String name;
     private String surname;
@@ -73,8 +74,8 @@ public class User {
                 '}';
     }
 
-    public String getValidId(String id) throws SQLException {
-        if (id.length() == 12 && isIdValid(id) && !existIdInDatabase(id)) {
+    public String getValidId(String id) {
+        if (id.length() == 12 && isIdValid(id)) {
             return id;
         }
         return null;
@@ -92,13 +93,5 @@ public class User {
             throw new RuntimeException(e);
         }
         return false;
-    }
-
-    public boolean existIdInDatabase(String id) throws SQLException {
-        Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/registrationSystem?user=root&password=Eva171292");
-        Statement statement = connect.createStatement();
-        String SQL = "SELECT * FROM Users WHERE personId = '"+ id +"'";
-        ResultSet result = statement.executeQuery(SQL);
-        return result.next();
     }
 }

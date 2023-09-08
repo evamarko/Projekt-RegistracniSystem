@@ -1,6 +1,5 @@
 package cz.engeto.projekt2.service;
 
-
 import cz.engeto.projekt2.model.User;
 import cz.engeto.projekt2.model.UserResponse;
 
