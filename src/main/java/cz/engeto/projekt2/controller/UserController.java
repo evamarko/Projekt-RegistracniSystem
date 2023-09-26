@@ -24,9 +24,9 @@ public class UserController {
         try {
             String uuid = UUID.randomUUID().toString();
             userService.saveUser(new User(user.getName(), user.getSurname(), user.getPersonId(), uuid));
-            return new ResponseEntity<>("User was created successfully.", HttpStatus.CREATED);
+            return new ResponseEntity<>(Settings.USER_CREATED, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>("User was not created.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(Settings.USER_NOT_CREATED, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -73,9 +73,9 @@ public class UserController {
             updatedUser.setName(userResponse.getName());
             updatedUser.setSurname(userResponse.getSurname());
             userService.updateUser(updatedUser);
-            return new ResponseEntity<>("User was updated successfully.", HttpStatus.OK);
+            return new ResponseEntity<>(Settings.USER_UPDATED, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Cannot find User with id = " + userResponseId, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Settings.USER_NOT_FOUND + userResponseId, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -83,8 +83,8 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable("id") long id) {
         int result = userService.deleteUserById(id);
         if (result == 0) {
-            return new ResponseEntity<>("Cannot find user with id = " + id, HttpStatus.OK);
+            return new ResponseEntity<>(Settings.USER_NOT_FOUND + id, HttpStatus.OK);
         }
-        return new ResponseEntity<>("User was deleted successfully.", HttpStatus.OK);
+        return new ResponseEntity<>(Settings.USER_DELETED, HttpStatus.OK);
     }
 }
